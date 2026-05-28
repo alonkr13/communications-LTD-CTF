@@ -1,7 +1,4 @@
-import sqlite3
 import hmac
-from auth.dtos.dtos import ForgotPasswordDTO
-from database.connection import cursor
 import hashlib
 import smtplib
 from email.message import EmailMessage
@@ -11,13 +8,11 @@ import secrets
 hash_dic = {}
 SECRET_KEY = "COMM_LTD_CTF"
 
-
-def send_email_service(userEmail):
-    code_hash(userEmail)
-    bodyForMail = f"Verification Code is  {code_hash(userEmail)}"
-    send_email(userEmail,bodyForMail)
-
-
+def check_if_code_exists(email):
+    if email in hash_dic:
+        return True
+    else:
+        return False
 
 def verify_code(email, code):
     if email not in hash_dic or code is None:
@@ -63,3 +58,9 @@ def send_email(to_email, body):
         print("Email sent successfully!")
     except Exception as e:
         print(f"Error: {e}")
+
+
+def send_verification_email(userEmail):
+    code = code_hash(userEmail)
+    bodyForMail = f"Verification Code is  {code}"
+    send_email(userEmail,bodyForMail)

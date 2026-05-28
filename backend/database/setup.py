@@ -56,6 +56,7 @@ cursor.execute("""
 CREATE TABLE IF NOT EXISTS login_attempts (
     ip          TEXT PRIMARY KEY,
     failed_count INTEGER DEFAULT 0,
+    user_name TEXT,
     last_failed  TEXT
 )
 """)
